@@ -6,6 +6,7 @@ import os
 import time
 import platform
 import math
+from mathutils import Vector
 
 # Clear the default scene
 def clear_scene():
@@ -226,21 +227,34 @@ def process_request(data):
 
         scene = bpy.context.scene
         camera = bpy.data.objects.get("Camera")
+        light_data = bpy.data.lights.new(name="Lamp", type='POINT')
+        light_object = bpy.data.objects.new(name="Lamp", object_data=light_data)
+
+        # Link the light to the scene
+        bpy.context.collection.objects.link(light_object)
+
+        # Set light energy (brightness)
+        light_data.energy = 1000  # adjust as needed
         
         # Create camera if it doesn't exist
         if camera is None:
             bpy.ops.object.camera_add(location=(6, -6, 4))  # Moved further back and higher up
             camera = bpy.context.active_object
             camera.name = "Camera"
-            camera.rotation_euler = (0.9, 0, 0.8)  # Adjusted angle to look at scene
+            camera.rotation_euler = (1, 0, 0.6)  # Adjusted angle to look at scene
         
         # Set camera as active camera
         scene.camera = camera
+
+        # Position the light inside the room (room dimensions are 6.0 x 4.0 x 3.0)
+        light_object.location = (3.0, 2.0, 2.5)  # Center of the room, slightly below ceiling
         
         camera.data.type = 'PERSP' 
-        camera.data.lens = 24  # Wider lens angle (was 35)
+        camera.data.lens = 35  # Wider lens angle (was 35)
         camera.data.lens_unit = 'MILLIMETERS'  
-        camera.data.shift_x = 0.0  # Removed shift to center the view
+        # camera.data.shift_x = 0.0  # Removed shift to center the view
+        camera.data.shift_x = 0.3 
+        camera.data.shift_y = 0.1
         scene.render.resolution_x = 800
         scene.render.resolution_y = 800 
         camera.data.clip_start = 0.1 
