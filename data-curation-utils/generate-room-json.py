@@ -2,12 +2,14 @@ from openai import OpenAI
 import json
 import time
 import random
+import os
 
+# OpenAI config
 client = OpenAI(
-    api_key=""
+    api_key=os.environ.get('OPENAI_API_KEY')
 )
 # Function to generate a room description
-def generate_room_descriptions(n=10000, batch_size=50):
+def generate_room_descriptions(n=100, batch_size=50):
     descriptions = []
     
     prompt_template = """Generate {count} unique short and vivid room descriptions.
@@ -58,7 +60,7 @@ Now generate {count} descriptions following this format.
     return descriptions
 
 # Generate 10,000 room descriptions
-room_data = generate_room_descriptions(n=10000)
+room_data = generate_room_descriptions(n=100)
 
 # Save to file
 file_path = "../generated_room_descriptions.json"
