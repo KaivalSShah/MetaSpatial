@@ -34,7 +34,8 @@ def process_request(data):
         ground_truth = params.get('ground_truth')
         
         # Set up paths
-        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
         rooms_folder = os.path.join(project_root, "3d_utlis", "data")
         room_path = os.path.join(rooms_folder, room_name)
 
