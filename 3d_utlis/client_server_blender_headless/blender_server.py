@@ -259,7 +259,7 @@ def process_request(data):
         scene.render.resolution_y = 800 
         camera.data.clip_start = 0.1 
         camera.data.clip_end = 100.0
-        scene.eevee.taa_render_samples = 4
+        # scene.eevee.taa_render_samples = 4
 
 
         if ground_truth:
@@ -267,7 +267,14 @@ def process_request(data):
         else:
             scene.render.filepath = room_path + "/render_output_step_" + str(step_number) + ".png"
         scene.render.image_settings.file_format = 'PNG'
-
+        scene.render.engine = 'CYCLES'
+        scene.cycles.samples = 1
+        scene.cycles.max_bounces = 4
+        scene.cycles.diffuse_bounces = 1
+        scene.cycles.glossy_bounces = 1
+        scene.cycles.transparent_max_bounces = 2
+        scene.cycles.transmission_bounces = 2
+        scene.cycles.ao_bounces = 1
         bpy.ops.render.render(write_still=True)
         
         return f"Rendered image saved to {scene.render.filepath}"
